@@ -3,17 +3,27 @@ using System.Collections;
 
 public class BallMovement : MonoBehaviour {
 
-	private Rigidbody rigidbody;
+	private Vector3 startPosition;
+	private Rigidbody rbody;
 	public float moveForce;
 
 	void Start()
 	{
-		rigidbody = GetComponent < Rigidbody>();
+		startPosition = transform.position;
+		rbody = GetComponent < Rigidbody>();
 	}
 
 	void Update () {
-		float x = Input.acceleration.y*.5f;
-		float y = -Input.acceleration.x*.5f;
-		rigidbody.AddForce(new Vector3 (x, 0, y) * moveForce);
+		float x = -Input.acceleration.y;
+		float y = Input.acceleration.x;
+		rbody.AddForce(new Vector3 (x, 0, y) * moveForce);
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		if (collision.gameObject.layer == 9)
+		{
+			gameObject.transform.position = startPosition;
+		}
 	}
 }
